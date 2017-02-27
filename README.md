@@ -24,12 +24,12 @@ Details for setting up this project are at https://iadgov.github.io/unfetter/ana
 To quickly get the Unfetter Analytic and Unfetter Discover systems running, follow these steps.
 
 
-You will first need to clone all the projects in [unfetter-analytic](1).  Create a directory to hold all the projects, 
+Create a directory to hold all the projects, 
 ```bash
 mkdir unfetter-analytic
 cd unfetter-analytic
 ```
-
+Next, you will need to clone all the projects in [unfetter-analytic](https://www.github.com/unfetter-analytic).  
 ```bash
  curl -s https://api.github.com/orgs/unfetter-analytic/repos\?per_page\=200 | perl -ne 'print "$1\n" if (/"clone_url": "([^"]+)/)' | xargs -n 1 git clone
  ```

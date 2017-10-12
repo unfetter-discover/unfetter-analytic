@@ -2,189 +2,83 @@ version: '2'
 
 services:
 
-  unfetter-analytic-gateway:
-    image: nginx
-    container_name: unfetter-analytic-gateway
-    ports:
-     - "443:443"
-    depends_on:
-     - unfetter-analytic-openssl
-     - elasticsearch
-    links:
-     - kibana
-     - unfetter-discover-ui
-     - elasticsearch
-     - cti-stix-store
-    volumes:
-     - ./config/nginx/conf.d:/etc/nginx/conf.d
-     - ./certs/:/etc/pki/tls/certs
- 
-  unfetter-analytic-openssl:
-    image: svagi/openssl
-    container_name: unfetter-analytic-openssl
-    entrypoint:
-     - openssl
-     - req
-     - -subj
-     - /CN=localhost/DC=localhost/DC=localdomain
-     - -new
-     - -newkey
-     - rsa:2048
-     - -days
-     - "365"
-     - -nodes
-     - -x509
-     - -keyout
-     - /tmp/certs/server.key
-     - -out
-     - /tmp/certs/server.crt
-    volumes:
-     - ./certs/:/tmp/certs
-
   elasticsearch:
     build: ../elasticsearch
     container_name: elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    volumes:
+    - ../elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    - ../elasticsearch/kibana/:/usr/share/elasticsearch/kibana/
+    ports:
+    - "9300:9300"
+    - "9200:9200"
+    networks:
+      unfetter-network:
+        ipv4_address: 10.0.2.3     
+
+  logstash:
+    build: ../logstash
+    container_name: logstash
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
+    ports:
+      - "5000:5000"
+      - "3515:3515"
+      - "3516:3516"
+      - "3517:3517"
+    volumes:
+    - ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+    - ../logstash/pipeline:/usr/share/logstash/pipeline
+    links:
+     - elasticsearch:elasticsearch
+    networks:
+      unfetter-network:
+        ipv4_address: 10.0.2.2     
+     
 
   analytic-system:
     build: ../analytic-system
     container_name: analytic-system
     links:
      - elasticsearch:elasticsearch
-     - cti-stix-store:cti-stix-store
+     #- cti-stix-store:cti-stix-store
     volumes:
      - "../analytic-system/src:/usr/share/unfetter/src"
-
-
-  logstash:
-    build: ../logstash
-    container_name: logstash
-    ports:
-      - "5000:5000"
-      - "3515:3515"
-      - "3516:3516"
-      - "3517:3517"
-    tty: true
-    command:
-    - "-f"
-    - "/usr/share/logstash/config/"      
-    volumes:
-     - "../logstash/config:/usr/share/logstash/config/"
-    links:
-     - elasticsearch:elasticsearch
-     
 
   kibana:
     build: ../kibana
     container_name: kibana
     volumes:
-      - ../kibana/config/:/opt/kibana/config/
+      - ../kibana/config/:/usr/share/kibana/config
     ports:
       - "5601:5601"
-
-
-  unfetter-discover-ui:
-    image: unfetter/unfetter-discover-ui
-    container_name: unfetter-discover-ui
-    ports:
-     - "50000:50000"
-    depends_on:
-     - unfetter-discover-openssl
-    volumes:
-     - ./certs/:/etc/pki/tls/certs
-    entrypoint:
-     - ember
-     - server
-     - -live-reload-port
-     - "50000"
-     - -ssl
-     - -ssl-key
-     - /etc/pki/tls/certs/server.key
-     - -ssl-cert
-     - /etc/pki/tls/certs/server.crt
-  unfetter-discover-openssl:
-    image: svagi/openssl
-    container_name: unfetter-discover-openssl
-    entrypoint:
-     - openssl
-     - req
-     - -subj
-     - /CN=localhost/DC=localhost/DC=localdomain
-     - -new
-     - -newkey
-     - rsa:2048
-     - -days
-     - "365"
-     - -nodes
-     - -x509
-     - -keyout
-     - /tmp/certs/server.key
-     - -out
-     - /tmp/certs/server.crt
-    volumes:
-     - ./certs/:/tmp/certs
-  unfetter-discover-processor:
-    image: unfetter/unfetter-discover-processor
-    container_name: unfetter-discover-processor
-    volumes:
-     - ./config/examples:/tmp/examples
-    entrypoint:
-     - node
-     - processor.js
-     - -p
-     - "3000"
-     - -h
-     - cti-stix-store
-     - -j
-     - /tmp/examples/mitre-attack-cis/campaigns.json
-     - /tmp/examples/mitre-attack-cis/attack-patterns.json
-     - /tmp/examples/mitre-attack-cis/course-of-actions.json
-     - /tmp/examples/mitre-attack-cis/indicators.json
-     - /tmp/examples/mitre-attack-cis/malwares.json
-     - /tmp/examples/mitre-attack-cis/marking-definition-rating.json
-     - /tmp/examples/mitre-attack-cis/observable-path-relationships.json
-     - /tmp/examples/mitre-attack-cis/observable-paths.json
-     - /tmp/examples/mitre-attack-cis/relationships.json
-     - /tmp/examples/mitre-attack-cis/reports.json
-     - /tmp/examples/mitre-attack-cis/threat-actors.json
-     - /tmp/examples/mitre-attack-cis/tools.json
-    depends_on:
-     - cti-stix-store
-  cti-stix-store:
-    image: unfetter/cti-stix-store
-    container_name: cti-stix-store
-    depends_on:
-     - cti-stix-store-repository
     links:
-     - cti-stix-store-repository:repository
-    volumes:
-     - ./config/examples/schemas:/tmp/schemas
-    environment:
-     - SCHEMA_LOCATION=/tmp/schemas
-  cti-stix-store-repository:
-    image: mongo
-    container_name: cti-stix-store-repository
-  cti-stix-ui:
-    image: unfetter/cti-stix-ui
-    container_name: cti-stix-ui
-    depends_on:
-    - cti-stix-store
+    - elasticsearch:elasticsearch
+    networks:
+      unfetter-network:
+        ipv4_address: 10.0.2.4
+ 
+  analytic-system:
+    build: ../analytic-system
+    container_name: analytic-system
     links:
-    - cti-stix-store
-    ports:
-     - "40000:40000"
-    depends_on:
-    - unfetter-discover-openssl
+     - elasticsearch:elasticsearch
     volumes:
-     - ./certs/:/etc/pki/tls/certs
-    entrypoint:
-     - ember
-     - server
-     - -live-reload-port
-     - "40000"
-     - -ssl
-     - -ssl-key
-     - /etc/pki/tls/certs/server.key
-     - -ssl-cert
-     - /etc/pki/tls/certs/server.crt
+     - "../analytic-system/src:/usr/share/unfetter/src"
+    networks:
+      unfetter-network:
+        ipv4_address: 10.0.2.5
+
+   
+  
+networks:
+  unfetter-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.0.2.0/24
+        gateway: 10.0.2.1

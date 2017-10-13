@@ -1,0 +1,530 @@
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mSimultaneous Logins on a Host[0m
+
+CAR Number: CAR_2013_02_008
+
+
+Multiple users logged into a single machine at the same time, or even within the same hour, do not typically occur in networks we have observed.
+
+
+
+0
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mReg.exe called from Command Shell[0m
+
+CAR Number: CAR_2013_03_001
+
+
+Registry modifications are often essential in establishing persistence via known Windows mechanisms.Many legitimate modifications are done graphically via regedit.exe or by using the corresponding channels, or even calling the Registry APIs directly.  The built-in utility reg.exe provides a command-line interface to the registry, so that queries and modifications can be performed from a shell, such as cmd.exe. When a user is responsible for these actions, the parent of cmd.exe will likely be explorer.exe. Occasionally, power users and administrators write scripts that do this behavior as well, but likely from a different process tree. These background scripts must be learned so they can be tuned out accordingly.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mQuick execution of a series of suspicious commands[0m
+
+CAR Number: CAR_2013_04_002
+
+
+Certain commands are frequently used by malicious actors and infrequently used by normal users. By looking for execution of these commands in short periods of time we can see not only when a malicious user was on the system by also get an idea of what it was they were doing
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mSuspicious Run Locations[0m
+
+CAR Number: CAR_2013_05_002
+
+
+In Windows, files should never execute out of certain directory locations. Any of these, locations may exist for a variety of reasons, and executables may be present in the directory but should not execute. As a result, some defenders make the mistake of ignoring these directories and assuming that a process will never run from one. There are known TTPs that have taken advantage of this fact to go undetected. This fact should inform defenders to monitor these directories more closely, knowing that they should never contain running processes.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mUser Login Activity Monitoring[0m
+
+CAR Number: CAR_2013_10_001
+
+
+Monitoring logon and logoff events for hosts on the network is very important for situational awareness. This information can be used as both an indicator of unusual activity as well as to corroborate activity seen elsewhere.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mDLL Injection via Load Library[0m
+
+CAR Number: CAR_2013_10_002
+
+
+Microsoft Windows allows for processes to remotely create threads within other processes of the same privilege level. This functionality is provided via the Windows API CreateRemoteThread. Both Windows and third-party software use this ability for legitimate purposes. For example, the Windows process csrss.exe creates threads in programs to send signals to registered callback routines.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mRunDLL32.exe monitoring[0m
+
+CAR Number: CAR_2014_03_006
+
+
+Adversaries may find it necessary to use Dyanamic-link Libraries (DLLs) to evade defenses. One way these DLLs can be executed is through the use of the built-in Windows utility RunDLL32, which allows a user to execute code in a DLL, providing the name and optional arguments to an exported entry point.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mPowerShell Execution[0m
+
+CAR Number: CAR_2014_04_003
+
+
+PowerShell is a scripting environment included with Windows that is used by both attackers and administrators. Execution of PowerShell scripts in most Windows versions is opaque and not typically secured by antivirus which makes using PowerShell an easy way to circumvent security measures. This analytic detects execution of PowerShell scripts.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mServices launching Cmd[0m
+
+CAR Number: CAR_2014_05_002
+
+
+Windows runs the Service Control Manager (SCM) within the process services.exe. Windows launches services as independent processes or DLL loads within a svchost.exe group. To be a legitimate service, a process (or DLL) must have the appropriate service entry point SvcMain. If an application does not have the entry point, then it will timeout (default is 30 seconds) and the process will be killed. To survive the timeout, adversaries and red teams can create services that direct to cmd.exe with the flag /c, followed by the desired command. The /c flag causes the command shell to run a command and immediately exit. As a result, the desired program will remain running and it will report an error starting the service. This analytic will catch that command prompt instance that is used to launch the actual malicious executable.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mOutlier Parents of Cmd[0m
+
+CAR Number: CAR_2014_11_002
+
+
+Many programs create command prompts as part of their normal operation including malware used by attackers. This analytic attempts to identify suspicious programs spawning cmd.exe by looking for programs that do not normally create cmd.exe.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mRemote PowerShell Sessions[0m
+
+CAR Number: CAR_2014_11_004
+
+
+According to ATT&CK, PowerShell can be used over WinRM to remotely run commands on a host. When a remote PowerShell session starts, svchost.exe executes wsmprovhost.exe
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mCommand Launched from WinLogon[0m
+
+CAR Number: CAR_2014_11_008
+
+
+An adversary can use accessibility features (Ease of Access), such as StickyKeys or Utilman, to launch a command shell from the logon screen and gain SYSTEM access.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mUser Activity from Clearing Event Logs[0m
+
+CAR Number: CAR_2016_04_002
+
+
+It is unlikely that event log data would be cleared during normal operations, and it is likely that malicious attackers may try to cover their tracks by clearing an event log. When an event log gets cleared, it is suspicious. Alerting when a Clear Event Log is generated could point to this intruder technique. Centrally collecting events has the added benefit of making it much harder for attackers to cover their tracks. Event Forwarding permits sources to forward multiple copies of a collected event to multiple collectors, thus enabling redundant event collection. Using a redundant event collection model can minimize the single point of failure risk.
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mUser Activity from Stopping Windows Defensive Services[0m
+
+CAR Number: CAR_2016_04_003
+
+
+Spyware and malware remain a serious problem and Microsoft developed security services, Windows Defender and Windows Firewall, to combat this threat. In the event Windows Defender or Windows Firewall is turned off, administrators should correct the issue immediately to prevent the possibility of infection or further infection and investigate to determine if caused by crash or user manipulation. 
+
+
+
+analyzing
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mSuccessful Local Account Login[0m
+
+CAR Number: CAR_2016_04_004
+
+
+The successful use of Pass The Hash for lateral movement between workstations would trigger event ID 4624 with an event level of information, from the security log. This behavior would be a LogonType of 3 using NTLM authenticiation where it is not a domain login and not the ANONYMOUS LOGON account
+
+
+
+No Alerts Found
+
+
+
+
+
+
+ _   _          __        _    _                              [0m
+| | | | _ __   / _|  ___ | |_ | |_  ___  _ __      [1;93m  ..---..  [0m
+| | | || '_ \ | |_  / _ \| __|| __|/ _ \| '__|     [1;93m /.......\[0m
+| |_| || | | ||  _||  __/| |_ | |_|  __/| |        [1;93m|.........|[0m
+ \___/ |_| |_||_|   \___| \__| \__|\___||_|        [1;93m:.........;[0m
+    _                   _         _    _           [1;93m \  \~/  /[0m
+   / \    _ __    __ _ | | _   _ | |_ (_)  ___     [1;93m  `, Y ,'  [0m
+  / _ \  | '_ \  / _` || || | | || __|| | / __|       |===|   
+ / ___ \ | | | || (_| || || |_| || |_ | || (__        |===|   
+/_/   \_\|_| |_| \__,_||_| \__, | \__||_| \___|        \_/    
+                           |___/                              
+
+
+
+[0;107m                                                                     [0m
+
+
+[0;97mSuccessful Remote Account Login[0m
+
+CAR Number: CAR_2016_04_005
+
+
+A remote desktop logon, through RDP, may be typical of a system administrator or IT support, but only from select workstations.  Monitoring remote desktop logons and comparing to known/approved originating systems can detect lateral movement of an adversary.
+
+
+
+No Alerts Found
+
+

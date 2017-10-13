@@ -3,13 +3,13 @@ version: '2'
 services:
 
   elasticsearch:
-    build: ../elasticsearch
+    build: ./elasticsearch
     container_name: elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
-    - ../elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    - ../elasticsearch/kibana/:/usr/share/elasticsearch/kibana/
+    - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    - ./elasticsearch/kibana/:/usr/share/elasticsearch/kibana/
     ports:
     - "9300:9300"
     - "9200:9200"
@@ -18,7 +18,7 @@ services:
         ipv4_address: 10.0.2.3     
 
   logstash:
-    build: ../logstash
+    build: ./logstash
     container_name: logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
@@ -28,8 +28,8 @@ services:
       - "3516:3516"
       - "3517:3517"
     volumes:
-    - ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-    - ../logstash/pipeline:/usr/share/logstash/pipeline
+    - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+    - ./logstash/pipeline:/usr/share/logstash/pipeline
     links:
      - elasticsearch:elasticsearch
     networks:
@@ -38,19 +38,19 @@ services:
      
 
   analytic-system:
-    build: ../analytic-system
+    build: ./analytic-system
     container_name: analytic-system
     links:
      - elasticsearch:elasticsearch
      #- cti-stix-store:cti-stix-store
     volumes:
-     - "../analytic-system/src:/usr/share/unfetter/src"
+     - "./analytic-system/src:/usr/share/unfetter/src"
 
   kibana:
-    build: ../kibana
+    build: ./kibana
     container_name: kibana
     volumes:
-      - ../kibana/config/:/usr/share/kibana/config
+      - ./kibana/config/:/usr/share/kibana/config
     ports:
       - "5601:5601"
     links:
@@ -60,12 +60,12 @@ services:
         ipv4_address: 10.0.2.4
  
   analytic-system:
-    build: ../analytic-system
+    build: ./analytic-system
     container_name: analytic-system
     links:
      - elasticsearch:elasticsearch
     volumes:
-     - "../analytic-system/src:/usr/share/unfetter/src"
+     - "./analytic-system/src:/usr/share/unfetter/src"
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.5

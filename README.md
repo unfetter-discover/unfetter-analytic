@@ -29,9 +29,10 @@ Create a directory to hold all the projects,
 mkdir unfetter-analytic
 cd unfetter-analytic
 ```
-Next, you will need to clone all the projects in [unfetter-analytic](https://www.github.com/unfetter-analytic).  
+Next, you will need to clone two repos in [unfetter-analytic](https://www.github.com/unfetter-analytic).  
 ```bash
- curl -s https://api.github.com/orgs/unfetter-analytic/repos\?per_page\=200 | perl -ne 'print "$1\n" if (/"clone_url": "([^"]+)/)' | xargs -n 1 git clone
+ git clone https://github.com/unfetter-analytic/unfetter.git
+ git clone https://github.com/unfetter-analytic/windows-example.git
  ```
  Next, change directories into the unfetter directory, which houses the docker-compose.yml files, and run docker-compose
  ```
@@ -40,18 +41,5 @@ Next, you will need to clone all the projects in [unfetter-analytic](https://www
 ```
 ### Kibana
 After running the `docker-compose` command, you can view the Kibana application at:
-https://localhost/
+http://localhost:5601/
 
-### The Web Application
-
-After running the `docker-compose` command you can view the application at:
-
-https://localhost/unfetter-discover-ui/
-
-> Note: If you receive a 404 error from nginx, ensure you include the trailing slash
-> on the URL
-
-Unfetter-Discover will create certs and store them locally. You will need to
-accept the certificates to move forward.
-
-ATT&CK is a trademark of The MITRE Corporation.

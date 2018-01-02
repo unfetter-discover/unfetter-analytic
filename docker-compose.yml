@@ -35,16 +35,6 @@ services:
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.2     
-     
-
-  analytic-system:
-    build: ./analytic-system
-    container_name: analytic-system
-    links:
-     - elasticsearch:elasticsearch
-     #- cti-stix-store:cti-stix-store
-    volumes:
-     - "./analytic-system/src:/usr/share/unfetter/src"
 
   kibana:
     build: ./kibana

@@ -36,5 +36,4 @@
 .vscode
 .vagrant
 .DS_Store
-certs/
-cti-stix-services
+

@@ -29,19 +29,19 @@ RUN wget http://downloads.typesafe.com/scala/2.11.7/scala-2.11.7.tgz?_ga=1.20486
 ############################
 
 RUN echo  "*** Installing Spark ***"
-RUN wget http://archive.apache.org/dist/spark/spark-2.1.2/spark-2.1.2-bin-hadoop2.6.tgz -q \
-    && tar -xf spark-2.1*.tgz \
+RUN wget http://archive.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.6.tgz -q \
+    && tar -xf spark-2.2*.tgz \
     && mkdir /usr/local/spark \
-    && mv spark-2.1*/* /usr/local/spark/
+    && mv spark-2.2*/* /usr/local/spark/
     #This will quiet the INFO and WARN to console when testing.
 COPY log4j.properties /usr/local/spark/conf
 COPY spark-defaults.conf /usr/local/spark/conf
 
 RUN echo "*** Installing Elasticsearch-hadoop ****"
-RUN wget http://download.elastic.co/hadoop/elasticsearch-hadoop-5.6.3.zip -q \
+RUN wget http://download.elastic.co/hadoop/elasticsearch-hadoop-6.1.1.zip -q \
     #&& mkdir /usr/local/spark/jars \
-    && unzip elasticsearch-hadoop-5*.zip \ 
-    && mv elasticsearch-hadoop-5.6.3/dist/elasticsearch-hadoop-5.6.3.jar /usr/local/spark/jars/elasticsearch-hadoop.jar \
+    && unzip elasticsearch-hadoop-6*.zip \ 
+    && mv elasticsearch-hadoop-6.1.1/dist/elasticsearch-hadoop-6.1.1.jar /usr/local/spark/jars/elasticsearch-hadoop.jar \
     && rm -r elasticsearch-hadoop*
 
 

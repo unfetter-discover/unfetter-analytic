@@ -3,7 +3,7 @@ version: '2'
 services:
 
   elasticsearch:
-    build: ./elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
     container_name: elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
@@ -37,7 +37,7 @@ services:
         ipv4_address: 10.0.2.2     
 
   kibana:
-    build: ./kibana
+    image: docker.elastic.co/kibana/kibana:6.1.1
     container_name: kibana
     volumes:
       - ./kibana/config/:/usr/share/kibana/config

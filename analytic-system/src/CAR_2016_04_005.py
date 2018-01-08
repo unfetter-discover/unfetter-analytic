@@ -21,7 +21,7 @@ CAR_DESCRIPTION = "A remote desktop logon, through RDP, may be typical of a syst
 CAR_URL = "http://attack.mitre.org"
 ES_INDEX = "winevent_security*"
 ES_TYPE = "winevent_security"
-ALERT_INDEX = "sitaware"
+ALERT_INDEX = "alert"
 INDICATOR_ID = "indicator--ab50dc6b-3389-4228-96ea-4f5543426785"
 
 class CAR_2016_04_005():

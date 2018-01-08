@@ -29,7 +29,7 @@ CAR_DESCRIPTION = "Certain commands are frequently used by malicious actors "\
     "malicious user was on the system by also get an idea of what it was "\
     "they were doing"
 ATTACK_TACTIC = "Discovery, Credential Access, Lateral Movement, Persistence, Privilege Escalation, Defense Evasion, Execution"
-ALERT_INDEX = "sitaware"
+ALERT_INDEX = "alert"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-04-002"
 ES_INDEX = "sysmon-*"
 ES_TYPE = "sysmon_process"

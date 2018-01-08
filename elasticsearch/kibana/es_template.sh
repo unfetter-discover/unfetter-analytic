@@ -1,4 +1,4 @@
-curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/alert' -d '
+curl -H'Content-Type: application/json' --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/alert' -d '
 {
     "template": "alert",
     "order": 1,
@@ -17,7 +17,7 @@ curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/alert' 
 }
 ' 
 echo ""
-curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/sitaware' -d '
+curl -H'Content-Type: application/json' --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/sitaware' -d '
 {
     "template": "sitaware",
     "order": 1,
@@ -37,7 +37,7 @@ curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/sitawar
 ' 
 echo ""
 # Error
-curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/winevent_system' -d '
+curl -H'Content-Type: application/json' --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/winevent_system' -d '
 {
     "template": "winevent_system*",
     "order": 1,
@@ -66,7 +66,7 @@ curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/wineven
 }
 ' 
 echo ""
-curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/winevent_security' -d '
+curl -H'Content-Type: application/json' --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/winevent_security' -d '
 {
     "template": "winevent_security*",
     "order": 1,
@@ -97,7 +97,7 @@ curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/wineven
 }
 ' 
 echo ""
-curl --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/sysmon' -d '
+curl -H'Content-Type: application/json' --silent --noproxy localhost -XPUT 'http://localhost:9200/_template/sysmon' -d '
 {
     "template": "sysmon*",
     "order": 1,

@@ -2,6 +2,20 @@ version: '2'
 
 services:
 
+ # Cerebro Elasticsearch client
+  cerebro:
+    image: yannart/cerebro:latest
+    container_name: cerbero
+
+    # Instead of building the image locally,  can use:
+    # image: yannart/cerebro:latest
+
+    ports:
+      - "9000:9000"
+    networks:
+      unfetter-network:
+        ipv4_address: 10.0.2.6 
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
     container_name: elasticsearch

@@ -26,7 +26,7 @@ CAR_URL = "https://car.mitre.org/wiki/CAR-2013-02-008"
 ES_INDEX = "winevent_security-*"
 ES_TYPE = "winevent_security"
 INDICATOR_ID = "indicator--a98a7044-b118-464e-b8a6-f18e97591ab0"
-ALERT_INDEX = "sitaware"
+ALERT_INDEX = "alert"
 
 class CAR_2013_02_008():
     def __init__(self):

@@ -24,7 +24,7 @@ CAR_DESCRIPTION = "Monitoring logon and logoff events for hosts on the "\
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-10-001"
 ES_INDEX = "winevent_security-*"
 ES_TYPE = "winevent_security"
-ALERT_INDEX = "sitaware"
+ALERT_INDEX = "alert"
 INDICATOR_ID = "indicator--f04e6079-0439-47f1-8a3b-d16d459461a9"
 
 class CAR_2013_10_001():

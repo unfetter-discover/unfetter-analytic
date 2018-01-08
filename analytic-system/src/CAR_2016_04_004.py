@@ -23,7 +23,7 @@ ATTACK_TACTIC = "Defense Evasion"
 CAR_URL = "https://car-.mitre.org/wiki/CAR-2016-04-004"
 ES_INDEX = "winevent_security*"
 ES_TYPE = "winevent_security"
-ALERT_INDEX = "sitaware"
+ALERT_INDEX = "alert"
 INDICATOR_ID = "indicator--7522721a-b267-4b21-ad38-910044ce4720"
 class CAR_2016_04_004():
 

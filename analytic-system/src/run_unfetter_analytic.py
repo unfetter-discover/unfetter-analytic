@@ -212,7 +212,7 @@ if __name__ == '__main__':
     rdd = analytic.analyze(rdd, args.begin, args.end)
     if args.test is False:
         es_helper.alert(rdd, analytic.car_data["alert_index"], analytic.car_data["car_number"])
-        if args.post_stix and (not rdd.isEmpty()):
-            postSTIXStore(analytic.car_data)
+ #       if args.post_stix and (not rdd.isEmpty()):
+#            postSTIXStore(analytic.car_data)
     else:
         es_helper.printAlert(rdd)

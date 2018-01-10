@@ -3,15 +3,17 @@ version: '2'
 services:
 
  # Cerebro Elasticsearch client
+  
   cerebro:
-    image: yannart/cerebro:latest
+    image: dylanmei/cerebro
     container_name: cerbero
-
+    depends_on:
+      - elasticsearch
     # Instead of building the image locally,  can use:
     # image: yannart/cerebro:latest
 
     ports:
-      - "9000:9000"
+      - 9000:9000
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.6 
@@ -25,8 +27,9 @@ services:
     - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     - ./elasticsearch/kibana/:/usr/share/elasticsearch/kibana/
     ports:
-    - "9300:9300"
-    - "9200:9200"
+    - 9300:9300
+    - 9200:9200
+
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.3     
@@ -37,10 +40,10 @@ services:
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
     ports:
-      - "5000:5000"
-      - "3515:3515"
-      - "3516:3516"
-      - "3517:3517"
+      - 5000:5000
+      - 3515:3515
+      - 3516:3516
+      - 3517:3517
     volumes:
     - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
     - ./logstash/pipeline:/usr/share/logstash/pipeline
@@ -56,7 +59,7 @@ services:
     volumes:
       - ./kibana/config/:/usr/share/kibana/config
     ports:
-      - "5601:5601"
+      - 5601:5601
     links:
     - elasticsearch:elasticsearch
     networks:

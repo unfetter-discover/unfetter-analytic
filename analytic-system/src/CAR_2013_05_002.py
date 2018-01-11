@@ -28,7 +28,7 @@ CAR_DESCRIPTION = "In Windows, files should never execute out of certain "\
     "directories more closely, knowing that they should never contain "\
     "running processes."
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-05-002"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon-process-"
 ES_TYPE = "sysmon_process"
 ALERT_INDEX = "alert"
 INDICATOR_ID = "indicator--ede3b60f-d0c2-4c39-b1c7-8d094c7f92cf"

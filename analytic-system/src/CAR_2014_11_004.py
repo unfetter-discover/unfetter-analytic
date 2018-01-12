@@ -21,7 +21,7 @@ CAR_DESCRIPTION = "According to ATT&CK, PowerShell can be used over WinRM to rem
 ATTACK_TACTIC = "Execution, Lateral Movement"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-11-004"
 ALERT_INDEX = "alert"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon-process"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--b422e825-8abe-4b8a-865c-bf3b90295f8e"
 

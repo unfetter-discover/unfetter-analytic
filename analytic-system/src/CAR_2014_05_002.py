@@ -27,7 +27,7 @@ CAR_DESCRIPTION = "Windows runs the Service Control Manager (SCM) within the pro
 ATTACK_TACTIC = "Persistence, Privilege Escalation"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-05-002"
 ALERT_INDEX = "alert"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon-process"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--90c35f49-cb87-4b33-bf8e-d15aa59671d2"
 

@@ -21,7 +21,7 @@ CAR_DESCRIPTION = "An adversary can use accessibility features (Ease of Access),
 ATTACK_TACTIC = "Execution, Persistence, Privilege Escalation"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-11-008"
 ALERT_INDEX = "alert"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon-process"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--8f433a51-f9ec-4781-ac67-94b400d8eae6"
 

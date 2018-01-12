@@ -23,7 +23,7 @@ CAR_DESCRIPTION = "PowerShell is a scripting environment included with Windows t
 ATTACK_TACTIC = "Defense Evasion"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-04-003"
 ALERT_INDEX = "alert"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon-process"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--20ab0b2d-9a79-4bd3-a9c6-d6aed0880287"
 

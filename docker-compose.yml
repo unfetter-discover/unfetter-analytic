@@ -1,4 +1,4 @@
-version: '2'
+version: '2.2'
 
 services:
 
@@ -9,8 +9,6 @@ services:
     container_name: cerbero
     depends_on:
       - elasticsearch
-    # Instead of building the image locally,  can use:
-    # image: yannart/cerebro:latest
 
     ports:
       - 9000:9000
@@ -22,13 +20,20 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
     container_name: elasticsearch
     environment:
-      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      - cluster.name=unfetter
+      - node.name=elasticsearch
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g    
     volumes:
-    - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    - ./elasticsearch/kibana/:/usr/share/elasticsearch/kibana/
+      - es1:/usr/share/elasticsearch/data
     ports:
-    - 9300:9300
-    - 9200:9200
+      - "9200:9200"
+    restart: unless-stopped      
 
     networks:
       unfetter-network:
@@ -49,6 +54,7 @@ services:
     - ./logstash/pipeline:/usr/share/logstash/pipeline
     links:
      - elasticsearch:elasticsearch
+    restart: unless-stopped     
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.2     
@@ -58,10 +64,16 @@ services:
     container_name: kibana
     volumes:
       - ./kibana/config/:/usr/share/kibana/config
+    depends_on:
+      - elasticsearch
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_URL: http://elasticsearch:9200      
     ports:
       - 5601:5601
     links:
     - elasticsearch:elasticsearch
+    restart: unless-stopped
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.4
@@ -89,3 +101,6 @@ networks:
       config:
       - subnet: 10.0.2.0/24
         gateway: 10.0.2.1
+volumes:
+  es1:
+    driver: local        

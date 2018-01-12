@@ -22,7 +22,7 @@ CAR_DESCRIPTION = "Microsoft Windows allows for processes to remotely create thr
     "legitimate purposes. For example, the Windows process csrss.exe creates threads in programs to send signals to registered callback routines."
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-10-002"
 ALERT_INDEX = "alert"
-ES_INDEX = "sysmon-*"
+ES_INDEX = "sysmon_process-*"
 ES_TYPE = "sysmon_thread"
 INDICATOR_ID = "indicator--b60b69f6-2d4c-41d1-8d3b-cfbf64e98bc2"
 

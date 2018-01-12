@@ -1,28 +1,19 @@
 '''
-NOTICE
 
-This software was produced for the U. S. Government
-under Basic Contract No. W15P7T-13-C-A802, and is
-subject to the Rights in Noncommercial Computer Software
-and Noncommercial Computer Software Documentation
-Clause 252.227-7014 (FEB 2012)
-
-Copyright 2016 The MITRE Corporation. All Rights Reserved.
-
-CAR_2013_03_001 is a CAR analytic looking for Reg.exe called from Command Shell
+This is a place holder until we get a better interaction with Unfetter Discover Analytic creating system.
 '''
 
-CAR_NUMBER = "CAR_2013_03_001"
+CAR_NUMBER = "CAR_2018_01_001"
 CAR_NAME = "Reg.exe called from Command Shell"
 CAR_DESCRIPTION = "Registry modifications are often essential in establishing persistence via known Windows mechanisms.Many legitimate modifications are done graphically via regedit.exe or by using the corresponding channels, or even calling the Registry APIs directly.  The built-in utility reg.exe provides a command-line interface to the registry, so that queries and modifications can be performed from a shell, such as cmd.exe. When a user is responsible for these actions, the parent of cmd.exe will likely be explorer.exe. Occasionally, power users and administrators write scripts that do this behavior as well, but likely from a different process tree. These background scripts must be learned so they can be tuned out accordingly."
 ATTACK_TACTIC = "Defense Evasion, Persistence, Privilege Escalation"
-CAR_URL = "https://car.mitre.org/wiki/CAR-2013-03-001"
+CAR_URL = "https://??"
 ES_INDEX = "sysmon_process-*"
-ES_TYPE = ""
+ES_TYPE = "_doc"
 ALERT_INDEX = "alert"
 INDICATOR_ID = "indicator--7f506572-63a9-4176-b008-a3da322b28bd"
 
-class CAR_2013_03_001():
+class CAR_2018_01_001():
     def __init__(self):
 
         self.car_data = dict(car_name=CAR_NAME,
@@ -39,8 +30,9 @@ class CAR_2013_03_001():
         begin = begin_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # filter on process create
+        print len(rdd.collect())
         rdd = rdd.filter(lambda item: (item[1]['data_model']['action'] == "create"))
-
+        print len(rdd.collect())
         # Map in the CAR information and rename fields the analytic needs for ease of use
         # This needs to happen after the filter on process create, or some of the fields won't be there
         rdd = rdd.map(lambda item: (
@@ -64,17 +56,19 @@ class CAR_2013_03_001():
              'action': item[1]["data_model"]["action"],
              'data_model': item[1]["data_model"]
              }))
-
+        print len(rdd.collect())
         # Filter events based on begin and end time
         rdd = rdd.filter(lambda item: (item[1]['@timestamp'] <= end))
         rdd = rdd.filter(lambda item: (item[1]['@timestamp'] >= begin))
+        print len(rdd.collect())
         # Get a list of all the process_guid for CMD.exe that were not created by explorer.exe
-        reg_cmd_rdd = rdd.filter(lambda item: (
-            item[1]['exe'] == "cmd.exe")).filter(lambda item: (item[1]['parent_exe'] != "explorer.exe"))
-        guid_list = reg_cmd_rdd.map(lambda item: (item[1]['process_guid'])).collect()
+        # reg_cmd_rdd = rdd.filter(lambda item: (
+        #    item[1]['exe'] == "cmd.exe")).filter(lambda item: (item[1]['parent_exe'] != "explorer.exe"))
+        # guid_list = reg_cmd_rdd.map(lambda item: (item[1]['process_guid'])).collect()
 
         # Filter for all the reg.exe, created by cmd.exe, but cmd.exe was not created by explorer.exe
         rdd = rdd.filter(lambda item: (
-            item[1]['exe'] == "reg.exe")).filter(lambda item: (item[1]['parent_exe'] == "cmd.exe")).filter(lambda item: (item[1]['parent_process_guid'] in guid_list))
+            item[1]['exe'] == "regsvr32.exe")).filter(lambda item: (item[1]['parent_exe'] == "cmd.exe"))
+
 
         return rdd

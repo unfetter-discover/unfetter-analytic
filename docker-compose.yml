@@ -7,6 +7,9 @@ services:
   cerebro:
     image: dylanmei/cerebro
     container_name: cerbero
+    depends_on:
+      - elasticsearch
+
     ports:
       - 9000:9000
     networks:
@@ -31,6 +34,7 @@ services:
     ports:
       - "9200:9200"
     restart: unless-stopped      
+
     networks:
       unfetter-network:
         ipv4_address: 10.0.2.3     

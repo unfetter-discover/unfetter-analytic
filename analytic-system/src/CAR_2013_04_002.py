@@ -31,7 +31,7 @@ CAR_DESCRIPTION = "Certain commands are frequently used by malicious actors "\
 ATTACK_TACTIC = "Discovery, Credential Access, Lateral Movement, Persistence, Privilege Escalation, Defense Evasion, Execution"
 ALERT_INDEX = "alert"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-04-002"
-ES_INDEX = "sysmon-process-*"
+ES_INDEX = "sysmon_process-*"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--c5e8bc82-d425-49bd-af71-77b908ddf8a9"
 

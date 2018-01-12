@@ -23,7 +23,7 @@ CAR_DESCRIPTION = "Adversaries may find it necessary to use Dyanamic-link Librar
 ATTACK_TACTIC = "Defense Evasion"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-03-006"
 ALERT_INDEX = "sitaware"
-ES_INDEX = "sysmon-process-*"
+ES_INDEX = "sysmon_process-*"
 ES_TYPE = "sysmon_process"
 INDICATOR_ID = "indicator--7e34ebee-8014-4e1a-a3a8-639f5afb3e61"
 

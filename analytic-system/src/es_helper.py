@@ -22,7 +22,7 @@ def get_rdd(es_index, es_type):
     if es_type is "":
         resource = es_index
     else:
-        resource = es_index + "/" + es_type
+        resource = es_index + "/" + "doc"
     es_read_conf = {
         "es.nodes": ES_IP,
         "es.port": ES_PORT,
@@ -57,7 +57,7 @@ def alert(rdd, alert_index, car_number):
         es_write_conf = {
             "es.nodes": ES_IP,
             "es.port": ES_PORT,
-            "es.resource": alert_index + "/" + car_number
+            "es.resource": alert_index+"/"+"doc"
         }
         rdd.saveAsNewAPIHadoopFile(
             path='-',

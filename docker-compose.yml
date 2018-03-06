@@ -1,84 +1,78 @@
-version: '2.2'
+version: "3.3"
 
 services:
 
- # Cerebro Elasticsearch client
-  
   cerebro:
     image: dylanmei/cerebro
     container_name: cerbero
     depends_on:
       - elasticsearch
-
     ports:
       - 9000:9000
     networks:
-      unfetter-network:
-        ipv4_address: 10.0.2.6 
+      - elk
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-    container_name: elasticsearch
+    command: elasticsearch -Enetwork.host=0.0.0.0 -Ediscovery.zen.ping.unicast.hosts=elasticsearch
     environment:
       - cluster.name=unfetter
       - node.name=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.3
+    deploy:
+      resources:
+        limits:
+          memory: 2g
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 2g    
     volumes:
       - es1:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-    restart: unless-stopped      
-
     networks:
-      unfetter-network:
-        ipv4_address: 10.0.2.3     
+      - elk
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.1.3
+    ports:
+      - "5601:5601"
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    deploy:
+      mode: replicated
+      replicas: 1
 
   logstash:
+    hostname: logstash
     build: ./logstash
-    container_name: logstash
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
-    ports:
-      - 5000:5000
-      - 3515:3515
-      - 3516:3516
-      - 3517:3517
+    image: 127.0.0.1:5000/logstash
     volumes:
     - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
     - ./logstash/pipeline:/usr/share/logstash/pipeline
-    links:
-     - elasticsearch:elasticsearch
-    restart: unless-stopped     
-    networks:
-      unfetter-network:
-        ipv4_address: 10.0.2.2     
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:6.1.1
-    container_name: kibana
-    volumes:
-      - ./kibana/config/:/usr/share/kibana/config
-    depends_on:
-      - elasticsearch
-    environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_URL: http://elasticsearch:9200      
+    
     ports:
-      - 5601:5601
-    links:
-    - elasticsearch:elasticsearch
-    restart: unless-stopped
+        - "10514:10514/tcp"
+        - "10514:10514/udp"
+        - "12201:12201/udp"
     networks:
-      unfetter-network:
-        ipv4_address: 10.0.2.4
- 
+      - elk
+    deploy:
+      mode: replicated
+      replicas: 2
+
+
   analytic-system:
+    image: 127.0.0.1:5000/analytic-system
     build: ./analytic-system
     container_name: analytic-system
     links:
@@ -86,21 +80,14 @@ services:
     volumes:
      - "./analytic-system/src:/usr/share/unfetter/src"
     networks:
-      unfetter-network:
-        ipv4_address: 10.0.2.5
+     - elk
 
-   
-  
 networks:
-  unfetter-network:
-    driver: bridge
+  elk:
+    driver: overlay
     driver_opts:
-      com.docker.network.enable_ipv6: "false"
-    ipam:
-      driver: default
-      config:
-      - subnet: 10.0.2.0/24
-        gateway: 10.0.2.1
+      encrypted: "true"
+
 volumes:
   es1:
-    driver: local        
+    driver: local    

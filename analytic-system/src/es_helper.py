@@ -13,7 +13,7 @@ Clause 252.227-7014 (FEB 2012)
 from pyspark import SparkContext, SparkConf
 import json
 
-ES_IP = "10.0.2.3"
+ES_IP = "elasticsearch"
 ES_PORT = "9200"
 
 
@@ -53,7 +53,7 @@ def alert(rdd, alert_index, car_number):
     if rdd.isEmpty():
         print "No Alerts Found\n\n"
     else:
-        print "%d new alerts\n\n" %rdd.count()
+        print "%d new alerts\n\n" % rdd.count()
         es_write_conf = {
             "es.nodes": ES_IP,
             "es.port": ES_PORT,

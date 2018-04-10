@@ -18,6 +18,7 @@ import sys
 import json
 import logging
 from stix2 import Sighting
+from stix2 import ObservedData
 from stix2 import parse
 from pymongo import MongoClient
 
@@ -39,18 +40,70 @@ def create_hostname():
     return("hostname_"+str(random.randint(0, 20)))
 
 
-def post_stix_store(stix_data):
+def post_stix_store(owner, sighting_data, observed_data_input):
+    client = MongoClient("localhost", 27018)
+    db = client['stix']
+    stixCollection = db['stix']
     now = datetime.datetime.utcnow()
-    print_now = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    search_observables = {}
+    for key, value in observed_data_input.iteritems():
+        search_observables['stix.objects.0.'+key] = value
+    print "************"
+    print search_observables
+    print "************"
+    observable_data = stixCollection.find_one({"$and": [search_observables]})
+    if (observable_data):
+        print("in if")
+        pprint.pprint(observable_data)
+        observable_id = observable_data["_id"]
+        observed_object = ObservedData(
+            number_observed=observable_data["stix"]["number_observed"]+1,
+            id=observable_id,
+            created_by_ref=observable_data["stix"]["created_by_ref"],
+            first_observed=observable_data["stix"]["first_observed"],
+            last_observed=now,
+            objects={
+                "0": observed_data_input
+            }
+        )
+        observed_data = {
+            '_id': observed_object.id,
+            '_v': 0,
+            'stix': observed_object
+        }
+        observed_id = stixCollection.find_one_and_update(
+            {'_id': observed_object.id},
+            {'$inc': {'stix.count': 1}},
+            {'stix.last_observed': now.strftime("%Y-%m-%dT%H:%M:%SZ")})
+    else:
+        print("in else")
+        observed_object = ObservedData(
+            number_observed=1,
+            created_by_ref=owner,
+            first_observed=now,
+            last_observed=now,
+            objects={
+                "0": observed_data_input
+            }
+        )
+        observed_data = {
+            '_id': observed_object.id,
+            '_v': 0,
+            'stix': observed_object
+        }
+        observed_id = stixCollection.insert_one(observed_data).inserted_id
+
     sighting_object = Sighting(
         count=1,
-        first_seen=print_now,
-        last_seen=print_now,
-        sighting_of_ref=stix_data['indicator_id'],
-        observed_data_refs=stix_data['observed_data_refs'],
-        where_sighted_refs=stix_data['where_sighted_refs'],
-        created_by_ref=stix_data['where_sighted_refs'],
-        x-unfetter-asset=stix_data['asset'],
+        first_seen=now,
+        last_seen=now,
+        sighting_of_ref=sighting_data['indicator_id'],
+        observed_data_refs=[observed_object.id],
+        where_sighted_refs=sighting_data['where_sighted_refs'],
+        created_by_ref=sighting_data['where_sighted_refs'],
+        custom_properties={
+            "x_unfetter_asset": sighting_data['asset']
+        }
     )
     sighting = {
         '_id': sighting_object.id,
@@ -58,11 +111,10 @@ def post_stix_store(stix_data):
         "stix": sighting_object
     }
 
-    client = MongoClient("localhost", 27018)
-    db = client['stix']
-    stixCollection = db['stix']
-    stixID = stixCollection.insert_one(sighting).inserted_id
-    pprint.pprint(stixCollection.find_one({'_id': stixID}))
+    sighting_id = stixCollection.insert_one(sighting).inserted_id
+    pprint.pprint("**************************************")
+    pprint.pprint(stixCollection.find_one({'_id': sighting_id}))
+    pprint.pprint(stixCollection.find_one({'_id': observed_id}))
 
 
 if __name__ == '__main__':
@@ -88,8 +140,17 @@ if __name__ == '__main__':
         "observed_data_refs": "observed-data--c5070cf2-f563-44b2-b6e7-d9684d56223a",
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
     }
-
+    observable_data_1 = {
+        "type": "file",
+        "name": "PowerShell.exe",
+        "magic_number_hex": "4D5A"
+    }
     # CAR-2013-02-012
+    observable_data_2 = {
+        "type": "file",
+        "name": "PowerShell.exe",
+        "magic_number_hex": "4D5A"
+    }
     sighting_2 = {
         "name": "User Logged in to Multiple Hosts",
         "indicator_id": "indicator--48d2d0eb-c2bd-4777-b389-7bd3804de89c",
@@ -98,7 +159,9 @@ if __name__ == '__main__':
             "hostname": create_hostname()},
         "observed_data_refs": "observed-data--e998d38c-0808-4327-b4d9-c4a615b8723b",
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
-
     }
-    post_stix_store(sighting_1)
-    post_stix_store(sighting_2)
+
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)

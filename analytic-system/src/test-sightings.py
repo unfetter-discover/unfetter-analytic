@@ -243,13 +243,13 @@ if __name__ == '__main__':
 
     post_stix_store(
         "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_3, observable_data_3)
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_4, observable_data_4)
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_5, observable_data_5)
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_6, observable_data_6)
+#    post_stix_store(
+#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)
+#    post_stix_store(
+#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_3, observable_data_3)
+#    post_stix_store(
+#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_4, observable_data_4)
+#    post_stix_store(
+#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_5, observable_data_5)
+#    post_stix_store(
+#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_6, observable_data_6)

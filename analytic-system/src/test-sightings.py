@@ -69,6 +69,9 @@ def post_stix_store(owner, sighting_data, observed_data_input):
             {'stix.last_observed': now.strftime("%Y-%m-%dT%H:%M:%SZ")})
     else:
         print("in else")
+        print "???????"
+        print owner
+        print "???????????"
         observed_object = ObservedData(
             number_observed=1,
             created_by_ref=owner,
@@ -92,7 +95,7 @@ def post_stix_store(owner, sighting_data, observed_data_input):
         sighting_of_ref=sighting_data['indicator_id'],
         observed_data_refs=[observed_object.id],
         where_sighted_refs=sighting_data['where_sighted_refs'],
-        created_by_ref=sighting_data['where_sighted_refs'],
+        created_by_ref=owner,
         custom_properties={
             "x_unfetter_asset": sighting_data['asset']
         }

@@ -21,15 +21,11 @@ from stix2 import Sighting
 from stix2 import ObservedData
 from stix2 import parse
 from pymongo import MongoClient
-
-
 import random
-
 import pprint
-
-
 # TODO
 # http://stackoverflow.com/questions/11415570/directory-path-types-with-argparse
+
 
 def create_IP():
     return(".".join(map(str, (random.randint(0, 255)
@@ -48,13 +44,9 @@ def post_stix_store(owner, sighting_data, observed_data_input):
     search_observables = {}
     for key, value in observed_data_input.iteritems():
         search_observables['stix.objects.0.'+key] = value
-    print "************"
-    print search_observables
-    print "************"
     observable_data = stixCollection.find_one({"$and": [search_observables]})
     if (observable_data):
         print("in if")
-        pprint.pprint(observable_data)
         observable_id = observable_data["_id"]
         observed_object = ObservedData(
             number_observed=observable_data["stix"]["number_observed"]+1,
@@ -137,19 +129,22 @@ if __name__ == '__main__':
         "asset": {
             "ip": create_IP(),
             "hostname": create_hostname()},
-        "observed_data_refs": "observed-data--c5070cf2-f563-44b2-b6e7-d9684d56223a",
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
     }
     observable_data_1 = {
         "type": "file",
-        "name": "PowerShell.exe",
+        "name": "powershell.exe",
         "magic_number_hex": "4D5A"
     }
     # CAR-2013-02-012
     observable_data_2 = {
-        "type": "file",
-        "name": "PowerShell.exe",
-        "magic_number_hex": "4D5A"
+        "type": "user-account",
+        "user_id": "userID1",
+        "account_type": "windows",
+        "display_name": "User One",
+        "is_service_account": False,
+        "is_privileged": False
+
     }
     sighting_2 = {
         "name": "User Logged in to Multiple Hosts",
@@ -157,7 +152,89 @@ if __name__ == '__main__':
         "asset": {
             "ip": create_IP(),
             "hostname": create_hostname()},
-        "observed_data_refs": "observed-data--e998d38c-0808-4327-b4d9-c4a615b8723b",
+        "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
+    }
+
+    # CAR-2016-04-005
+    observable_data_3 = {
+        "type": "user-account",
+        "user_id": "userID2",
+        "account_type": "windows",
+        "display_name": "User Two",
+        "is_service_account": False,
+        "is_privileged": False
+
+    }
+    sighting_3 = {
+        "name": "Remote Desktop Login",
+        "indicator_id": "indicator--ab50dc6b-3389-4228-96ea-4f5543426785",
+        "asset": {
+            "ip": create_IP(),
+            "hostname": create_hostname()},
+        "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
+    }
+
+    # CAR-2016-04-005
+    observable_data_4 = {
+        "type": "process",
+        "pid": "34",
+        "name": "regedit.exe",
+        "cwd": "C:\Windows"
+    }
+    sighting_4 = {
+        "name": "Reg.exe called from Command Shell",
+        "indicator_id": "indicator--7f506572-63a9-4176-b008-a3da322b28bd",
+        "asset": {
+            "ip": create_IP(),
+            "hostname": create_hostname()},
+        "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
+    }
+
+    # CAR-2016-04-005
+    observable_data_4 = {
+        "type": "process",
+        "pid": "34",
+        "name": "regedit.exe",
+        "cwd": "C:\Windows"
+    }
+    sighting_4 = {
+        "name": "Reg.exe called from Command Shell",
+        "indicator_id": "indicator--7f506572-63a9-4176-b008-a3da322b28bd",
+        "asset": {
+            "ip": create_IP(),
+            "hostname": create_hostname()},
+        "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
+    }
+
+    # CAR-2016-04-005
+    observable_data_5 = {
+        "type": "process",
+        "pid": "34",
+        "name": "ipconfig.exe",
+        "cwd": "C:\Windows\System32"
+    }
+    sighting_5 = {
+        "name": "Quick execution of a series of suspicious commands",
+        "indicator_id": "indicator--c5e8bc82-d425-49bd-af71-77b908ddf8a9",
+        "asset": {
+            "ip": create_IP(),
+            "hostname": create_hostname()},
+        "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
+    }
+
+    # CAR-2016-04-005
+    observable_data_6 = {
+        "type": "process",
+        "pid": "34",
+        "name": "ping.exe",
+        "cwd": "C:\Windows\System32"
+    }
+    sighting_6 = {
+        "name": "Quick execution of a series of suspicious commands",
+        "indicator_id": "indicator--c5e8bc82-d425-49bd-af71-77b908ddf8a9",
+        "asset": {
+            "ip": create_IP(),
+            "hostname": create_hostname()},
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
     }
 
@@ -165,3 +242,11 @@ if __name__ == '__main__':
         "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)
     post_stix_store(
         "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_3, observable_data_3)
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_4, observable_data_4)
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_5, observable_data_5)
+    post_stix_store(
+        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_6, observable_data_6)

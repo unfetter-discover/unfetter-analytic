@@ -17,5 +17,5 @@ do
 #    spark-submit run_unfetter_analytic.py -c CAR-2016-04-002 -d min 1 -p
 #    spark-submit run_unfetter_analytic.py -c CAR-2016-04-003 -d min 1 -p
 #    spark-submit run_unfetter_analytic.py -c CAR-2016-04-004 -d min 1 -p
-    spark-submit run_unfetter_analytic.py -c CAR_2018_03_001 -d min 900 -p
+    spark-submit run_unfetter_analytic.py -c CAR_2018_03_001 -d min 1 -p
 done

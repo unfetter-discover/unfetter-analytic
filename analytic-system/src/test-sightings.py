@@ -12,7 +12,8 @@ Clause 252.227-7014 (FEB 2012)
 '''
 
 import argparse
-import datetime
+
+from datetime import datetime, timedelta
 import pdb
 import sys
 import json
@@ -40,11 +41,19 @@ def post_stix_store(owner, sighting_data, observed_data_input):
     client = MongoClient("localhost", 27018)
     db = client['stix']
     stixCollection = db['stix']
-    now = datetime.datetime.utcnow()
+    now = datetime.utcnow() - timedelta(days=random.randint(0, 30))
+    print "**************"
+    print now
+    print "**************"
     search_observables = {}
     for key, value in observed_data_input.iteritems():
         search_observables['stix.objects.0.'+key] = value
     observable_data = stixCollection.find_one({"$and": [search_observables]})
+    print "xxxxxxxxxxxxxxxxxx"
+    print search_observables
+    print observable_data
+    print "xxxxxxxxxxxxxxxxxx"
+
     if (observable_data):
         print("in if")
         observable_id = observable_data["_id"]
@@ -180,7 +189,7 @@ if __name__ == '__main__':
     # CAR-2016-04-005
     observable_data_4 = {
         "type": "process",
-        "pid": "34",
+        "pid": 34,
         "name": "regedit.exe",
         "cwd": "C:\Windows"
     }
@@ -196,7 +205,7 @@ if __name__ == '__main__':
     # CAR-2016-04-005
     observable_data_4 = {
         "type": "process",
-        "pid": "34",
+        "pid": 34,
         "name": "regedit.exe",
         "cwd": "C:\Windows"
     }
@@ -212,7 +221,7 @@ if __name__ == '__main__':
     # CAR-2016-04-005
     observable_data_5 = {
         "type": "process",
-        "pid": "34",
+        "pid": 34,
         "name": "ipconfig.exe",
         "cwd": "C:\Windows\System32"
     }
@@ -228,7 +237,7 @@ if __name__ == '__main__':
     # CAR-2016-04-005
     observable_data_6 = {
         "type": "process",
-        "pid": "34",
+        "pid": 34,
         "name": "ping.exe",
         "cwd": "C:\Windows\System32"
     }
@@ -241,15 +250,17 @@ if __name__ == '__main__':
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
     }
 
-    post_stix_store(
-        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)
-#    post_stix_store(
-#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)
-#    post_stix_store(
-#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_3, observable_data_3)
-#    post_stix_store(
-#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_4, observable_data_4)
-#    post_stix_store(
-#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_5, observable_data_5)
-#    post_stix_store(
-#        "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_6, observable_data_6)
+    for _ in range(1):
+
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_2, observable_data_2)
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_3, observable_data_3)
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_4, observable_data_4)
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_5, observable_data_5)
+        post_stix_store(
+            "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_6, observable_data_6)

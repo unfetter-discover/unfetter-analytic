@@ -42,20 +42,12 @@ def post_stix_store(owner, sighting_data, observed_data_input):
     db = client['stix']
     stixCollection = db['stix']
     now = datetime.utcnow() - timedelta(days=random.randint(0, 30))
-    print "**************"
-    print now
-    print "**************"
     search_observables = {}
     for key, value in observed_data_input.iteritems():
         search_observables['stix.objects.0.'+key] = value
     observable_data = stixCollection.find_one({"$and": [search_observables]})
-    print "xxxxxxxxxxxxxxxxxx"
-    print search_observables
-    print observable_data
-    print "xxxxxxxxxxxxxxxxxx"
 
     if (observable_data):
-        print("in if")
         observable_id = observable_data["_id"]
         observed_object = ObservedData(
             number_observed=observable_data["stix"]["number_observed"]+1,
@@ -77,10 +69,6 @@ def post_stix_store(owner, sighting_data, observed_data_input):
             {'$inc': {'stix.count': 1}},
             {'stix.last_observed': now.strftime("%Y-%m-%dT%H:%M:%SZ")})
     else:
-        print("in else")
-        print "???????"
-        print owner
-        print "???????????"
         observed_object = ObservedData(
             number_observed=1,
             created_by_ref=owner,
@@ -116,9 +104,9 @@ def post_stix_store(owner, sighting_data, observed_data_input):
     }
 
     sighting_id = stixCollection.insert_one(sighting).inserted_id
-    pprint.pprint("**************************************")
-    pprint.pprint(stixCollection.find_one({'_id': sighting_id}))
-    pprint.pprint(stixCollection.find_one({'_id': observed_id}))
+#    pprint.pprint("**************************************")
+#    pprint.pprint(stixCollection.find_one({'_id': sighting_id}))
+#    pprint.pprint(stixCollection.find_one({'_id': observed_id}))
 
 
 if __name__ == '__main__':
@@ -250,7 +238,7 @@ if __name__ == '__main__':
         "where_sighted_refs": "identity--4ac44385-691d-411a-bda8-027c61d68e99"
     }
 
-    for _ in range(1):
+    for _ in range(100):
 
         post_stix_store(
             "identity--4ac44385-691d-411a-bda8-027c61d68e99", sighting_1, observable_data_1)

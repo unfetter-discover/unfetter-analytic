@@ -33,7 +33,7 @@ RUN wget http://archive.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop
     && tar -xf spark-2.2*.tgz \
     && mkdir /usr/local/spark \
     && mv spark-2.2*/* /usr/local/spark/
-    #This will quiet the INFO and WARN to console when testing.
+#This will quiet the INFO and WARN to console when testing.
 COPY log4j.properties /usr/local/spark/conf
 COPY spark-defaults.conf /usr/local/spark/conf
 
@@ -59,8 +59,10 @@ RUN cd Python-2.7.12 \
     && make 
 
 RUN apt-get -y install python-pip
-RUN pip install requests
 
+RUN pip install requests
+RUN pip install stix2
+RUN pip install pymongo
 
 COPY src /usr/share/unfetter/src
 #ENTRYPOINT /usr/share/unfetter/run.sh

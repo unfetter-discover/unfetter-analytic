@@ -61,9 +61,7 @@ services:
     - ./logstash/pipeline:/usr/share/logstash/pipeline
     
     ports:
-        - "10514:10514/tcp"
-        - "10514:10514/udp"
-        - "12201:12201/udp"
+        - "5044:5044/tcp"
     networks:
       - elk
     deploy:

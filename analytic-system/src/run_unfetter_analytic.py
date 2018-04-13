@@ -21,6 +21,14 @@ import sys
 import requests
 import json
 import logging
+from stix2 import Sighting
+from stix2 import ObservedData
+from stix2 import parse
+
+
+from pymongo import MongoClient
+
+import pprint
 
 """This is the main user interface to the CAR analytics code.  This python program will start, accept and validate
 arguments, and create the desired CAR analytic class, and will call the class's analytics."""
@@ -97,6 +105,10 @@ class valid_CAR(argparse.Action):
 
 
 def printHeader():
+
+    print "*******************************************"
+
+    return
     y = "\033[1;93m"
     o = "\033[0m"
     b_w = "\033[0;107m"
@@ -137,41 +149,53 @@ def printHeader():
     print b_w + " " * (len(analytic[1]) + len(bulb[1])) + o + "\n\n"
 
 
-def postSTIXStore(car_data):
-    now = datetime.datetime.utcnow()
-    sighting = {'data':{'type':'sightings',
-                        'attributes':{
-                            'created':now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                            'version':'1',
-                            'modified':now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                            'summary':car_data['car_name'],
-                            'sighting_of_ref':car_data['indicator_id']
-                        }}}
+def post_stix_store(owner, analytic):
 
-    url = 'http://cti-stix-store:3000/cti-stix-store-api/sightings'
-    headers = {'Accept' : 'application/vnd.api+json',
-               'Content-Type' : 'application/vnd.api+json'}
-    response = requests.post(url, headers=headers, data=json.dumps(sighting))
-    if response.status_code >= 400:
-        print "Error posting to Unfetter-Discover: Code %s" %response.status_code
-    else:
-        print "Alert sent to Unfetter-Discover"
+    client = MongoClient("cti-stix-store-repository", 27017)
+    db = client['stix']
+    stixCollection = db['stix']
+    now = datetime.datetime.utcnow()
+    print "********"
+    print analytic.car_data
+    sighting_object = Sighting(
+        count=1,
+        first_seen=now,
+        last_seen=now,
+        sighting_of_ref=analytic.car_data['indicator_id'],
+        where_sighted_refs=[owner],
+        created_by_ref=owner,
+
+    )
+    sighting = {
+        '_id': sighting_object.id,
+        '_v': 0,
+        "stix": sighting_object
+    }
+
+    sighting_id = stixCollection.insert_one(sighting).inserted_id
+#    pprint.pprint("**************************************")
+#    pprint.pprint(stixCollection.find_one({'_id': sighting_id}))
+#    pprint.pprint(stixCollection.find_one({'_id': observed_id}))
+
 
 def printCARHeader(car_data):
-    print "\033[0;97m%s\033[0m\n" %car_data["car_name"]
-    print "CAR Number: %s\n\n" %car_data["car_number"]
+    print "\033[0;97m%s\033[0m\n" % car_data["car_name"]
+    print "CAR Number: %s\n\n" % car_data["car_number"]
     print car_data["car_description"]
     print "\n\n"
     return
 
+
 def buildArgument():
     now = datetime.datetime.utcnow()
     parser = argparse.ArgumentParser(description=DESCRIPTION_STRING)
-    parser.add_argument('-c', help=CAR_HELP, dest='car_number', required=True, action=valid_CAR)
+    parser.add_argument('-c', help=CAR_HELP, dest='car_number',
+                        required=True, action=valid_CAR)
     parser.add_argument(
         '-e', help=END_HELP, dest='end', required=False,
         default=now, type=valid_date)
-    parser.add_argument('-b', help=BEGIN_HELP, dest='begin', required=False, type=valid_date)
+    parser.add_argument('-b', help=BEGIN_HELP, dest='begin',
+                        required=False, type=valid_date)
     parser.add_argument('-d', help=DURATION_HELP, required=False,
                         dest='duration', action=valid_duration,
                         default=['min', 60], nargs=2)
@@ -183,6 +207,7 @@ def buildArgument():
     args = parser.parse_args()
 
     return args, parser
+
 
 if __name__ == '__main__':
     dur_lookup = {"min": 1, "hour": 60, "day": 60 * 24}
@@ -206,13 +231,19 @@ if __name__ == '__main__':
         if args.begin >= args.end:
             parser.error("The end date (-e) is before the begin date (-b)")
     analytic = met()
-    rdd = es_helper.get_rdd(analytic.car_data["es_index"], analytic.car_data["es_type"])
+    rdd = es_helper.get_rdd(
+        analytic.car_data["es_index"], analytic.car_data["es_type"])
     printHeader()
     printCARHeader(analytic.car_data)
     rdd = analytic.analyze(rdd, args.begin, args.end)
     if args.test is False:
-        es_helper.alert(rdd, analytic.car_data["alert_index"], analytic.car_data["car_number"])
- #       if args.post_stix and (not rdd.isEmpty()):
-#            postSTIXStore(analytic.car_data)
+        es_helper.alert(
+            rdd, analytic.car_data["alert_index"], analytic.car_data["car_number"])
+        if (not rdd.isEmpty()):
+            # CAR-2016-04-005
+#  This is removed since it is difficult to install
+#            post_stix_store(
+                "identity--4ac44385-691d-411a-bda8-027c61d68e99", analytic)
+
     else:
         es_helper.printAlert(rdd)

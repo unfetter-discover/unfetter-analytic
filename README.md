@@ -38,8 +38,9 @@ Next, you will need to clone two repos in [unfetter-analytic](https://www.github
  ```
  Next, change directories into the unfetter directory, which houses the docker-compose.yml files, and run docker-compose
  ```
- cd unfetter
- docker-compose up
+cd unfetter
+docker swam init
+docker-compose up
 ```
 ### Kibana
 After running the `docker-compose` command, you can view the Kibana application at:
